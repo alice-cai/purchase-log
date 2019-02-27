@@ -1,0 +1,23 @@
+{
+  "name": "purchase-log",
+  "version": "1.0.0",
+  "description": "Application for logging individual purchases and calculating the total amount spent per purchase category.",
+  "main": "app.js",
+  "dependencies": {
+    "yargs": "^13.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alice-cai/purchase-log.git"
+  },
+  "author": "Alice Cai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alice-cai/purchase-log/issues"
+  },
+  "homepage": "https://github.com/alice-cai/purchase-log#readme"
+}
