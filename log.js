@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const categories = require('./categories.js');
-const currencyFormatter = require('./currency-format.js');
+const currency = require('./currency.js');
 
 const LOG_FILE = 'data/log-data.json';
 
@@ -55,7 +55,7 @@ let addPurchase = (category, price, description) => {
 let displayPurchase = (purchase) => {
 	console.log(`Category: ${purchase.category}`);
 	process.stdout.write(`Price: `);
-	currencyFormatter.output(purchase.price);
+	currency.format(purchase.price);
 	if (purchase.description) {
 		console.log(`Description: ${purchase.description}`);
 	} else {
@@ -117,7 +117,7 @@ let calculateSum = (purchaseList) => {
 */
 let displayTotals = () => {
 	let log = fetchLog();
-	let categoryList = categories.fetchCategories();
+	let categoryList = categories.getCategories();
 	let totalExpenses = 0;
 
 	console.log("\nTotal Expenses");
@@ -127,13 +127,13 @@ let displayTotals = () => {
 		if (purchaseList.length > 0) {
 			let sum = calculateSum(purchaseList);
 			process.stdout.write(`${category}: `);
-			currencyFormatter.output(purchase.price);
+			currency.format(purchase.price);
 			totalExpenses += sum;
 		}
 	}
 	console.log('---');
 	process.stdout.write('Total: ');
-	currencyFormatter.output(totalExpenses);
+	currency.format(totalExpenses);
 	console.log();
 };
 

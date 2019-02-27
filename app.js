@@ -3,6 +3,7 @@ const yargs = require('yargs');
 
 const categories = require('./categories.js');
 const log = require('./log.js');
+const currency = require('./currency.js');
 
 const categoryOptions = {
 	describe: 'puchase category',
@@ -38,6 +39,7 @@ const argv = yargs
 			demand: true
 		}
 	})
+	.command('remove-all', 'remove all purchases from the log')
 	.command('add-cat', 'add a category', {
 		name: categoryNameOptions
 	})
@@ -47,8 +49,15 @@ const argv = yargs
 	})
 	.command('reset-cat', 'reset categories')
 	.command('total', 'display total amount spent per category')
-	.command('remove-all', 'remove all purchases from the log')
-	.command('currency', 'change the currency')
+	.command('currency', 'display the current currency')
+	.command('list-currency', 'display the list of currencies')
+	.command('set-currency', 'set the currency', {
+		currency: {
+			describe: 'currency code (e.g. CAD for Canadian Dollars)',
+			demand: true,
+			alias: 'c'
+		}
+	})
 	.help()
 	.argv;
 
@@ -79,8 +88,11 @@ if (command === 'add') {
 		console.log('Purchase removed successfully.');
 	} else {
 		console.log("Invalid ID number. Use the 'list' command to see a list of all purchases");
-		console.log("and their corresponding ID's.");
+		console.log("and their corresponding IDs.");
 	}
+} else if (command === 'remove-all') {
+	log.removeAll();
+	console.log("All purchases were removed from the log.");
 } else if (command === 'add-cat') {
 	let existingCategory = categories.categoryExists(argv.name);
 
@@ -105,9 +117,18 @@ if (command === 'add') {
 	console.log("The category list has been reset to the default list.");
 } else if (command === 'total') {
 	log.displayTotals();
-} else if (command === 'remove-all') {
-	log.removeAll();
-	console.log("All purchases were removed from the log.");
+} else if (command === 'currency') {
+	currency.displayCurrentCurrency();
+} else if (command === 'set-currency') {
+	if (currency.currencyExists(argv.currency)) {
+		currency.setCurrency(argv.currency);
+		console.log("Currency successfully changed to", argv.currency.toUpperCase());
+	} else {
+		console.log("Invalid currency code. Use 'list-currency' to view the list of supported currencies.");
+		console.log("(e.g. To set the currency to Canadian Dollars, use 'node app.js set-currency -c=CAD')");
+	}
+} else if (command === 'list-currency') {
+	currency.displayCurrencyList();
 } else {
 	console.log("Unrecognized command. Use '--help' to see the list of available commands.");
 }
