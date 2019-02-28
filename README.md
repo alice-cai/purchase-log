@@ -2,7 +2,20 @@
 
 ## description
 
-This is a Node.js application that allows the user to log and categorize their past purchases. It automatically calculates the total amount of money spent per spending category. The following currencies are supported:
+This is a Node.js application that allows the user to log and categorize their past purchases. It automatically calculates the total amount of money spent per spending category and displays it in a table format.
+
+```
+------ Total Expenses ------
+
+Food               CA$  76.00
+Transportation     CA$  34.00
+Personal           CA$  55.00
+Entertainment      CA$  28.00
+---
+Total              CA$ 193.00
+```
+
+The following currencies are supported:
 
 - Canadian Dollar
 - US Dollar

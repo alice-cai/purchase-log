@@ -120,20 +120,22 @@ let displayTotals = () => {
 	let categoryList = categories.getCategories();
 	let totalExpenses = 0;
 
-	console.log("\nTotal Expenses");
-	console.log("==============");
+	let longestCategory = categoryList.reduce((c1, c2) => c1.length >= c2.length ? c1 : c2);
+	let categoryPadding = longestCategory.length + 5;
+
+	console.log("\n------ Total Expenses ------\n");
 	for (category of categoryList) {
 		let purchaseList = log.filter((purchase) => purchase.category.toUpperCase() === category.toUpperCase());
 		if (purchaseList.length > 0) {
 			let sum = calculateSum(purchaseList);
-			process.stdout.write(`${category}: `);
-			currency.format(purchase.price);
+			process.stdout.write(`${category.padEnd(categoryPadding)}`);
+			currency.format(sum, true);
 			totalExpenses += sum;
 		}
 	}
 	console.log('---');
-	process.stdout.write('Total: ');
-	currency.format(totalExpenses);
+	process.stdout.write('Total'.padEnd(categoryPadding));
+	currency.format(totalExpenses, true);
 	console.log();
 };
 
