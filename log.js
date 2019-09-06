@@ -139,6 +139,16 @@ let displayTotals = () => {
 
 
 /**
+* removeCategoryLogs(category): removes all purchase logs associated with the given category
+*/
+let removeCategoryLogs = (category) => {
+	let log = fetchLog();
+	log = log.filter((purchase) => purchase.category.toUpperCase() !== category.toUpperCase());
+	saveLog(log);
+};
+
+
+/**
 * removeAll(): erases all log data
 */
 let removeAll = () => {
@@ -151,5 +161,6 @@ module.exports = {
 	displayPurchaseLog,
 	removePurchase,
 	displayTotals,
+	removeCategoryLogs,
 	removeAll
 };

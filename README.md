@@ -53,7 +53,6 @@ Commands:
   app.js add-cat        add a category
   app.js list-cat       list all categories
   app.js remove-cat     remove a category
-  app.js reset-cat      reset categories
   app.js total          display total amount spent per category
   app.js currency       display the current currency
   app.js list-currency  display the list of currencies

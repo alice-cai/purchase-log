@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const categories = require('./categories.js');
 const log = require('./log.js');
 const currency = require('./currency.js');
+const util = require('./util.js');
 
 const categoryOptions = {
 	describe: 'puchase category',
@@ -48,7 +49,7 @@ const argv = yargs
 	.command('remove-cat', 'remove a category', {
 		name: categoryNameOptions
 	})
-	.command('reset-cat', 'reset categories')
+	//.command('reset-cat', 'reset categories') // for testing
 	.command('total', 'display total amount spent per category')
 	.command('currency', 'display the current currency')
 	.command('list-currency', 'display the list of currencies')
@@ -108,14 +109,26 @@ if (command === 'add') {
 } else if (command === 'remove-cat') {
 	let existingCategory = categories.categoryExists(argv.name);
 	if (existingCategory) {
-		categories.removeCategory(argv.name);
-		console.log(chalk.green("Category removed successfully."));
+		util.requestConfirmation("Removing this category will remove all purchases associated with it.")
+			.then(didConfirm => {
+				if (didConfirm) {
+					log.removeCategoryLogs(argv.name);
+					categories.removeCategory(argv.name);
+					console.log(chalk.green(`Category "${argv.name}" removed successfully.`));
+				} else {
+					console.log("Category removal aborted.");
+				}
+			})
+			.catch(error => {
+				// This should theoretically never run.
+				console.log(chalk.red("An unexpected error occured."));
+			});
 	} else {
 		console.log(chalk.red("This category does not exist."));
 	}
-} else if (command === 'reset-cat') {
-	categories.resetCategories();
-	console.log(chalk.green("The category list has been reset to the default list."));
+// } else if (command === 'reset-cat') {
+// 	categories.resetCategories();
+// 	console.log(chalk.green("The category list has been reset to the default list."));
 } else if (command === 'total') {
 	log.displayTotals();
 } else if (command === 'currency') {
