@@ -1,4 +1,5 @@
 const fs = require('fs');
+const chalk = require('chalk');
 
 const categories = require('./categories.js');
 const currency = require('./currency.js');
@@ -32,7 +33,7 @@ let saveLog = (log) => {
 *   specified by the arguments and saves it to the log
 */
 let addPurchase = (category, price, description) => {
-	if (typeof price === 'number' && price > 0 && (price * 100) % 1 === 0) {
+	if (typeof price === 'number' && price > 0 /*&& (price * 100) % 1 === 0*/) {
 		let log = fetchLog();
 
 		let newPurchase = {
@@ -53,14 +54,13 @@ let addPurchase = (category, price, description) => {
 * displayPurchase(purchase): outputs the argument purchase
 */
 let displayPurchase = (purchase) => {
-	console.log(`Category: ${purchase.category}`);
-	process.stdout.write(`Price: `);
+	console.log(chalk.bold("Category: ") + `${purchase.category}`);
+	process.stdout.write(chalk.bold(`Price: `));
 	currency.format(purchase.price);
 	if (purchase.description) {
-		console.log(`Description: ${purchase.description}`);
-	} else {
-		console.log();
+		console.log(chalk.bold("Description: ") + `${purchase.description}`);
 	}
+	console.log();
 };
 
 
@@ -70,11 +70,9 @@ let displayPurchase = (purchase) => {
 let displayPurchaseLog = () => {
 	let log = fetchLog();
 
-	console.log("\nPURCHASE LOG");
-	console.log("============\n");
+	console.log(chalk.bold("\n------ PURCHASE LOG ------\n"));
 	for (let i = 1; i <= log.length; i++) {
-		//console.log('\n');
-		console.log("Purchase ID: " + i);
+		console.log(chalk.bold("Purchase ID: ") + i);
 		displayPurchase(log[i - 1]);
 
 		if (i !== log.length) {
@@ -121,21 +119,21 @@ let displayTotals = () => {
 	let totalExpenses = 0;
 
 	let longestCategory = categoryList.reduce((c1, c2) => c1.length >= c2.length ? c1 : c2);
-	let categoryPadding = longestCategory.length + 5;
+	let categoryPadding = longestCategory.length + 7;
 
-	console.log("\n------ Total Expenses ------\n");
+	console.log(chalk.bold("\n------ Total Expenses ------\n"));
 	for (category of categoryList) {
 		let purchaseList = log.filter((purchase) => purchase.category.toUpperCase() === category.toUpperCase());
 		if (purchaseList.length > 0) {
 			let sum = calculateSum(purchaseList);
 			process.stdout.write(`${category.padEnd(categoryPadding)}`);
-			currency.format(sum, true);
+			currency.format(sum);
 			totalExpenses += sum;
 		}
 	}
-	console.log('---');
+	console.log("---");
 	process.stdout.write('Total'.padEnd(categoryPadding));
-	currency.format(totalExpenses, true);
+	currency.format(totalExpenses);
 	console.log();
 };
 

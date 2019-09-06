@@ -1,4 +1,5 @@
 const fs = require('fs');
+const chalk = require('chalk');
 
 const CATEGORY_FILE = 'data/category-data.json';
 const DEFAULT_CATEGORY_FILE = 'data/category-default-data.json';
@@ -90,8 +91,7 @@ let removeCategory = (name) => {
 let displayAll = () => {
 	let categoryList = fetchCategories();
 
-	console.log("\nCATEGORY LIST");
-	console.log("==============");
+	console.log(chalk.bold("\nCATEGORY LIST:"));
 	for (category of categoryList) {
 		console.log(category);
 	}

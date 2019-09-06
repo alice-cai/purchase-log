@@ -1,4 +1,5 @@
 const fs = require('fs');
+const chalk = require('chalk');
 
 const CURRENCY_LIST_FILE = 'data/currency-list.json';
 const FORMATTED_CURRENCY_LIST_FILE = 'data/currency-list-formatted.json';
@@ -54,12 +55,11 @@ let displayCurrencyList = () => {
 		let currencyListString = fs.readFileSync(FORMATTED_CURRENCY_LIST_FILE);
 		currencyList = JSON.parse(currencyListString);
 	} catch (e) {
-		console.log("Error retrieving currency list.");
+		console.log(chalk.red("Error retrieving currency list."));
 	}
 
 	if (currencyList) {
-		console.log("\nSupported Currencies");
-		console.log("====================");
+		console.log(chalk.bold("\nSUPPORTED CURRENCIES:"));
 		for (currency of currencyList) {
 			console.log(currency);
 		}
@@ -73,14 +73,14 @@ let fetchCurrentCurrency = () => {
 		let currencyString = fs.readFileSync(CURRENCY_FILE);
 		return JSON.parse(currencyString);
 	} catch (e) {
-		console.log("Error fetching current currency.");
+		console.log(chalk.red("Error fetching current currency."));
 		return undefined;
 	}
 };
 
 
 let displayCurrentCurrency = () => {
-	console.log("Currency set to: ", fetchCurrentCurrency());
+	console.log("Currency set to:", fetchCurrentCurrency());
 };
 
 
@@ -98,12 +98,12 @@ let currencyExists = (currency) => {
 
 
 let format = (amount, addPadding) => {
-	const DEFAULT_PADDDING = 7;
+	const DEFAULT_PADDDING = 4;
 
 	let currency = fetchCurrentCurrency();
 	let formatter;
 	let symbolLength;
-	let padding = DEFAULT_PADDDING;
+	//let padding = DEFAULT_PADDDING;
 
 	switch (currency) {
 		case CANADIAN_DOLLAR.code:
@@ -133,9 +133,10 @@ let format = (amount, addPadding) => {
 	}
 
 	let output = formatter.format(amount);
-	if (addPadding) {
-		output = output.substring(0, symbolLength) + output.substring(symbolLength).padStart(padding);
-	}
+	// if (addPadding) {
+	// 	output = output.substring(0, symbolLength) + output.substring(symbolLength).padStart(padding);
+
+	// }
 	console.log(output);
 };
 

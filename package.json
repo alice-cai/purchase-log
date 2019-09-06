@@ -4,7 +4,8 @@
   "description": "Application for logging individual purchases and calculating the total amount spent per purchase category.",
   "main": "app.js",
   "dependencies": {
-    "yargs": "^13.2.1"
+    "yargs": "^13.2.1",
+    "chalk": "^2.4.1"
   },
   "devDependencies": {},
   "scripts": {

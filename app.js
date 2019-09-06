@@ -1,5 +1,6 @@
 const fs = require('fs');
 const yargs = require('yargs');
+const chalk = require('chalk');
 
 const categories = require('./categories.js');
 const log = require('./log.js');
@@ -67,16 +68,16 @@ if (command === 'add') {
 	let validCategory = categories.categoryExists(argv.category);
 
 	if (!validCategory) {
-		console.log("Invalid category name. Use 'list-cat' to see the list of available");
-		console.log("categories, or use 'add-cat' to add a new one.");
+		console.log(chalk.red("Invalid category name. Use 'list-cat' to see the list of available"));
+		console.log(chalk.red("categories, or use 'add-cat' to add a new one."));
 	} else {
 		let purchase = log.addPurchase(argv.category, argv.price, argv.description);
 
 		if (purchase) {
-			console.log('Purchase added successfully.');
+			console.log(chalk.green('Purchase added successfully.'));
 			log.displayPurchase(purchase);
 		} else {
-			console.log("Invalid price. Price must be a positive numerical value.");
+			console.log(chalk.red("Invalid price. Price must be a positive numerical value."));
 		}
 	}
 } else if (command === 'list') {
@@ -85,22 +86,22 @@ if (command === 'add') {
 	let removed = log.removePurchase(argv.id);
 
 	if (removed) {
-		console.log('Purchase removed successfully.');
+		console.log(chalk.green('Purchase removed successfully.'));
 	} else {
-		console.log("Invalid ID number. Use the 'list' command to see a list of all purchases");
-		console.log("and their corresponding IDs.");
+		console.log(chalk.red("Invalid ID number. Use the 'list' command to see a list of all purchases"));
+		console.log(chalk.red("and their corresponding IDs."));
 	}
 } else if (command === 'remove-all') {
 	log.removeAll();
-	console.log("All purchases were removed from the log.");
+	console.log(chalk.green("All purchases were removed from the log."));
 } else if (command === 'add-cat') {
 	let existingCategory = categories.categoryExists(argv.name);
 
 	if (existingCategory) {
-		console.log("This category already exists.");
+		console.log(chalk.red("This category already exists."));
 	} else {
 		categories.addCategory(argv.name);
-		console.log("Category added successfully. Use 'list-cat' to see the list of categories.");
+		console.log(chalk.green("Category added successfully. Use 'list-cat' to see the list of categories."));
 	}
 } else if (command === 'list-cat') {
 	categories.displayAll();
@@ -108,13 +109,13 @@ if (command === 'add') {
 	let existingCategory = categories.categoryExists(argv.name);
 	if (existingCategory) {
 		categories.removeCategory(argv.name);
-		console.log("Category removed successfully.");
+		console.log(chalk.green("Category removed successfully."));
 	} else {
-		console.log("This category does not exist.");
+		console.log(chalk.red("This category does not exist."));
 	}
 } else if (command === 'reset-cat') {
 	categories.resetCategories();
-	console.log("The category list has been reset to the default list.");
+	console.log(chalk.green("The category list has been reset to the default list."));
 } else if (command === 'total') {
 	log.displayTotals();
 } else if (command === 'currency') {
@@ -122,13 +123,13 @@ if (command === 'add') {
 } else if (command === 'set-currency') {
 	if (currency.currencyExists(argv.currency)) {
 		currency.setCurrency(argv.currency);
-		console.log("Currency successfully changed to", argv.currency.toUpperCase());
+		console.log(chalk.green("Currency successfully changed to", argv.currency.toUpperCase()));
 	} else {
-		console.log("Invalid currency code. Use 'list-currency' to view the list of supported currencies.");
-		console.log("(e.g. To set the currency to Canadian Dollars, use 'node app.js set-currency -c=CAD')");
+		console.log(chalk.red("Invalid currency code. Use 'list-currency' to view the list of supported currencies."));
+		console.log(chalk.red("(e.g. To set the currency to Canadian Dollars, use 'node app.js set-currency -c=CAD')"));
 	}
 } else if (command === 'list-currency') {
 	currency.displayCurrencyList();
 } else {
-	console.log("Unrecognized command. Use '--help' to see the list of available commands.");
+	console.log(chalk.red("Unrecognized command. Use '--help' to see the list of available commands."));
 }
